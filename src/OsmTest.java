@@ -17,7 +17,7 @@ public class OsmTest {
             LinkedList test = new LinkedList();
 
             p.edges = edges;
-
+            int s = 1;
             for (Object edge : edges) {
                   DirectedEdge e = DirectedEdge.class.cast(edge);
                   for (Object edge2 : edges) {
