@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
+import javax.swing.JFrame;
 
 public class geojsonParser {
 
@@ -14,7 +15,6 @@ public class geojsonParser {
             LinkedList nodes = new LinkedList();
             LinkedList edges = new LinkedList();
             RoadGraph g = new RoadGraph();
-            
 
             FileReader fr = new FileReader("C:\\Users\\Richard\\Desktop\\eit\\broyteruter_student.geojson");
             BufferedReader br = new BufferedReader(fr);
@@ -32,9 +32,9 @@ public class geojsonParser {
             for (int i = 0; i < 5; i++) {
                   br.readLine();
             }
-            
-            while(br.ready()){
-            //for (int i = 0; i < 20; i++) {
+
+            //while (br.ready()) {
+                  for (int i = 0; i < 200; i++) {
                   StringTokenizer st = new StringTokenizer(br.readLine(), " ");
                   while (st.hasMoreTokens()) {
                         String t = st.nextToken();
@@ -47,13 +47,12 @@ public class geojsonParser {
                               case "ID":
                                     t2 = st.nextToken();
                                     t2 = t2.substring(0, t2.length() - 1);
-                                    if(!t2.equals("null")){
+                                    if (!t2.equals("null")) {
                                           id.add(Integer.parseInt(t2));
-                                    }
-                                    else{
+                                    } else {
                                           id.add(-1);
                                     }
-                                    
+
                                     break;
                               case "VLENKEID":
                                     t2 = st.nextToken();
@@ -132,6 +131,7 @@ public class geojsonParser {
                         }
                   }
             }
+            int d = 0;
             //Printing the information, to copare with the source file
             for (int i = 0; i < id.size(); i++) {
                   /*
@@ -143,23 +143,32 @@ public class geojsonParser {
                   System.out.print("VEGNUMMER: " + roadNumber.get(i) + ", ");
                   System.out.print("GATENAVN: " + name.get(i) + ", ");
                   System.out.print("Coordinates: ");
-                          */
+                   */
                   for (int j = 0; j < roadCords.get(i).size(); j += 2) {
                         GraphNode gn = new GraphNode();
                         //System.out.print("[" + roadCords.get(i).get(j) + ", " + roadCords.get(i).get(j + 1) + "], ");
                         gn.setLat(roadCords.get(i).get(j));
-                        gn.setLon(roadCords.get(i).get(j+1));
+                        gn.setLon(roadCords.get(i).get(j + 1));
+                        
                         nodes.add(gn);
-                        if(j > 0){
-                              DirectedEdge de = new DirectedEdge((GraphNode)nodes.get(nodes.size()-2), gn, linkid.get(i), 0, name.get(i), false);
+                        /*
+                        if(!containedInList(nodes, gn)){
+                        nodes.add(gn);
+                        }else{
+                              d++;
+                        }
+                                */
+
+                        if (j > 0) {
+                              DirectedEdge de = new DirectedEdge((GraphNode) nodes.get(nodes.size() - 2), gn, linkid.get(i), 0, name.get(i), false);
                               edges.add(de);
                         }
+                        
+
                   }
-                 // System.out.println("");
+                  // System.out.println("");
             }
-            
-            
-            
+
             GraphNode test;
             for (int i = 0; i < nodes.size(); i++) {
                   test = (GraphNode) nodes.get(i);
@@ -168,10 +177,32 @@ public class geojsonParser {
 
             fr.close();
             br.close();
-            
+
+            g.edges = edges;
+            g.nodes = nodes;
+
             System.out.println(edges.size() + "Edges");
             System.out.println(nodes.size() + "Nodes");
+            System.out.println(d);
+            
+             JFrame jf = new JFrame("test");
+            jf.setSize(1000, 1000);
+            jf.setVisible(true);
+            jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+            Graphics t = new Graphics(g);
+            jf.add(t);
 
       }
 
+      public static boolean containedInList(LinkedList l, GraphNode gn){
+            for (int i = 0; i < l.size(); i++) {
+                  GraphNode t = (GraphNode) l.get(i);
+                  if(t.getLat() == gn.getLat() && t.getLon() == gn.getLon()){
+                        return true;
+                  }
+            }
+            return false;
+      }
 }
+
