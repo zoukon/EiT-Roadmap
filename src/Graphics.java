@@ -19,6 +19,10 @@ public class Graphics extends Canvas {
             this.nodes = rg.nodes;
             this.edges = rg.edges;
       }
+       public Graphics(LinkedList nodes, LinkedList edges) {
+            this.nodes = nodes;
+            this.edges = edges;
+      }
 
       @Override
       public void paint(java.awt.Graphics g) {
@@ -67,6 +71,7 @@ public class Graphics extends Canvas {
                   }
 
             }
+            /**
             g.setColor(Color.red);
             for(Object gns : nodes){
                   GraphNode gn = GraphNode.class.cast(gns);
@@ -75,6 +80,7 @@ public class Graphics extends Canvas {
                         g.drawOval((int)((gn.getLat()-63.3)*8000-400),(int)((gn.getLon()-10.3)*4000-100), 3, 3);
                   }
             }
+            * **/
       }
 
 }

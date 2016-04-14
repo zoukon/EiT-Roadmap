@@ -18,21 +18,21 @@ public class OsmTest {
             LinkedList test = new LinkedList();
 
             p.edges = edges;
-            
-            
-            
-            LinkedList nodeTest = intersectionsToList(edges);
+
+            LinkedList nodeTest = intersectionsToListLooper(edges);
+            LinkedList comp = intersectionsToList(edges);
 
             p.nodes = nodeTest;
             
+            System.out.println(nodeTest.size() + "  " + comp.size());
             
-            for(Object sd : edges){
+            /*
+            for (Object sd : edges) {
                   DirectedEdge e = DirectedEdge.class.cast(sd);
                   System.out.println(e.getOtherTags());
             }
                     
-                    
-            
+
             MoselReader mr = new MoselReader("D:\\eitTest\\input.txt", "D:\\eitTest\\output.txt");
             mr.writeGraphToFile(edges, nodes);
             mr.closeStreams();
@@ -43,8 +43,10 @@ public class OsmTest {
             jf.setVisible(true);
             jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-            Graphics t = new Graphics(p);
+            Graphics t = new Graphics(nodes, edges);
             jf.add(t);
+                    
+                    */
 
       }
 
@@ -138,6 +140,60 @@ public class OsmTest {
                   }
             }
             return edges;
+      }
+
+      public static LinkedList intersectionsToListLooper(LinkedList edges) {
+            LinkedList intersections = new LinkedList();
+            for (Object edge : edges) {
+                  DirectedEdge e = DirectedEdge.class.cast(edge);
+                  for (Object edge2 : edges) {
+                        DirectedEdge e2 = DirectedEdge.class.cast(edge2);
+                        for (Object edge3 : edges) {
+                              DirectedEdge e3 = DirectedEdge.class.cast(edge3);
+
+                              if (e.from() == e2.from() && e.from() == e3.from()) {
+                                    if (!intersections.contains(e.from())) {
+                                          intersections.add(e.from());
+                                          e.from().setIntersection(true);
+                                    }
+
+                              } else if (e.from() == e2.from() && e.from() == e3.to()) {
+                                    if (!intersections.contains(e.from())) {
+                                          intersections.add(e.from());
+                                          e.from().setIntersection(true);
+                                    }
+
+                              } else if (e.from() == e2.to() && e.from() == e3.to()) {
+                                    if (!intersections.contains(e.to())) {
+                                          intersections.add(e.to());
+                                          e.to().setIntersection(true);
+                                    }
+
+                              } else if (e.to() == e2.to() && e.to() == e3.to()) {
+                                    if (!intersections.contains(e.to())) {
+                                          intersections.add(e.to());
+                                          e.to().setIntersection(true);
+                                    }
+                              }
+                              else if (e.to() == e2.from() && e.to() == e3.to()) {
+                                    if (!intersections.contains(e.to())) {
+                                          intersections.add(e.to());
+                                          e.to().setIntersection(true);
+                                    }
+                              }
+                              
+                              else if (e.to() == e2.to() && e.to() == e3.from()) {
+                                    if (!intersections.contains(e.to())) {
+                                          intersections.add(e.to());
+                                          e.to().setIntersection(true);
+                                    }
+                              }
+                              
+
+                        }
+                  }
+            }
+            return intersections;
       }
 
       public static LinkedList intersectionsToList(LinkedList edges) {

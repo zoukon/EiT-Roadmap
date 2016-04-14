@@ -28,8 +28,8 @@ public class MoselReader {
 
             for (Object s : edges) {
                   DirectedEdge e = DirectedEdge.class.cast(s);
-                  bw.write((int) e.from().getId() + ",");
-                  bw.write((int) e.to().getId() + ",");
+                  bw.write(nodes.indexOf(e.from()) + ",");
+                  bw.write(nodes.indexOf(e.to()) + ",");
                   bw.write(1 + ",");
                   bw.write(0 + ",");
                   bw.write(0 + ",");
@@ -49,7 +49,9 @@ public class MoselReader {
             int i = 0;
             for (Object s : edges) {
                   DirectedEdge e = DirectedEdge.class.cast(s);
-                  if (e.getType().equals("highway") || e.getType().equals("residential") || e.getType().equals("service")) {
+                  if (e.getType().equals("highway") || e.getType().equals("residential") || e.getType().equals("service") || 
+                          e.getType().equals("trunk") || e.getType().equals("primary") || e.getType().equals("secondary") || 
+                          e.getType().equals("tetriary") || e.getType().equals("unclassified")) {
                         bw.write(i + ",");
                   }
                   i++;
