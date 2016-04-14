@@ -57,14 +57,23 @@ public class Graphics extends Canvas {
                         int y2 = (int) toLon;
 
                         g.drawLine(x1, y1, x2, y2);
-                        
+                        /*
                         List<GraphNode> intersections = e.getIntersections();
                         for (int i = 0; i < intersections.size(); i++) {
                               GraphNode gn = intersections.get(i);
                               g.drawOval((int)((gn.getLat()-63.3)*8000-400),(int)((gn.getLon()-10.3)*4000-100), 3, 3);
                         }
+                                */
                   }
 
+            }
+            g.setColor(Color.red);
+            for(Object gns : nodes){
+                  GraphNode gn = GraphNode.class.cast(gns);
+                  
+                  if(gn.isIntersection()){
+                        g.drawOval((int)((gn.getLat()-63.3)*8000-400),(int)((gn.getLon()-10.3)*4000-100), 3, 3);
+                  }
             }
       }
 

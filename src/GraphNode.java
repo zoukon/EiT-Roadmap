@@ -22,12 +22,14 @@ public class GraphNode implements Serializable{
 	private double lon;
 	private double lat;
 	private long id;
+          private boolean intersection;
 	
 
 	public GraphNode() {
 		this.lon = 0.0;
 		this.lat = 0.0;
 		this.id = 0;
+                    this.intersection = false;
 	}
 /*	public KdTree.XYZPoint toXYZPoint(){
 		return new KdTree.XYZPoint(""+this.id,this.lat,this.lon,0);
@@ -37,6 +39,7 @@ public class GraphNode implements Serializable{
 		this.lon = lon;
 		this.lat = lat;
 		this.id = id;
+                    this.intersection = false;
 	}
 	
 
@@ -52,6 +55,9 @@ public class GraphNode implements Serializable{
 	public long getId() {
 		return id;
 	}
+          public boolean isIntersection(){
+                return intersection;
+          }
 	
 	public void setLon(double lon) {
 		this.lon = lon;
@@ -64,6 +70,9 @@ public class GraphNode implements Serializable{
 	public void setId(long l){
 		this.id = l;
 	}
+          public void setIntersection(boolean s){
+                intersection = s;
+          }
 	
 	@Override 
 	public boolean equals(Object node) {

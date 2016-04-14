@@ -155,7 +155,7 @@ public class RoadGraph {
                   GraphNode firstNode = getNode(allNodes, (long)way.getRefs().get(0));
                   for (int i = 1; i <= way.getRefs().size() - 1; i++) {
                         GraphNode nextNode = getNode(allNodes, (long)way.getRefs().get(i));
-                        double len = distanceInMilesBetweenPoints(firstNode.getLat(), firstNode.getLon(),
+                        double len = getDistance(firstNode.getLat(), firstNode.getLon(),
                                 nextNode.getLat(), nextNode.getLon());
 
                         if (way.getType() == null) {

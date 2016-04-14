@@ -113,6 +113,9 @@ public class DirectedEdge implements Serializable {
       public String getType() {
             return type;
       }
+      public String getOtherTags(){
+            return other_tags;
+      }
 
       public void setWayId(long way_id) {
             this.way_id = way_id;
