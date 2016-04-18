@@ -8,28 +8,35 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 public class MoselReader {
-
+      
       FileReader fr;
       BufferedReader br;
       FileWriter fw;
       BufferedWriter bw;
-
+      
       public MoselReader(String inFile, String outFile) throws FileNotFoundException, IOException {
             this.fr = new FileReader(inFile);
             this.br = new BufferedReader(fr);
             this.fw = new FileWriter(outFile);
             this.bw = new BufferedWriter(fw);
       }
-
+      
       public void writeGraphToFile(LinkedList edges, LinkedList nodes) throws IOException {
             bw.write("Arcs :");
             bw.newLine();
             bw.write("[");
-
+            
+            bw.write("1,2,0,0,0,100,100,100,100,100,100,");
+            bw.newLine();
+            bw.write("2,1,0,0,0,100,100,100,100,100,100,");
+            bw.newLine();
+            bw.write("1,1,0,0,0,0,0,0,0,0,0,");
+            bw.newLine();
+            
             for (Object s : edges) {
                   DirectedEdge e = DirectedEdge.class.cast(s);
-                  bw.write(nodes.indexOf(e.from()) + ",");
-                  bw.write(nodes.indexOf(e.to()) + ",");
+                  bw.write((nodes.indexOf(e.from()) + 2) + ",");
+                  bw.write((nodes.indexOf(e.to()) + 2) + ",");
                   bw.write(1 + ",");
                   bw.write(0 + ",");
                   bw.write(0 + ",");
@@ -40,27 +47,42 @@ public class MoselReader {
                   bw.write(calculateTime(e, 1) + ",");
                   bw.write(calculateTime(e, 2.5) + ",");
                   bw.newLine();
+                  
+                  if (!e.isOneway()) {
+                        bw.write((nodes.indexOf(e.to()) + 2) + ",");
+                        bw.write((nodes.indexOf(e.from()) + 2) + ",");
+                        bw.write(1 + ",");
+                        bw.write(0 + ",");
+                        bw.write(0 + ",");
+                        bw.write(calculateTime(e, 1) + ",");
+                        bw.write(calculateTime(e, 1.5) + ",");
+                        bw.write(calculateTime(e, 1) + ",");
+                        bw.write(calculateTime(e, 2.0) + ",");
+                        bw.write(calculateTime(e, 1) + ",");
+                        bw.write(calculateTime(e, 2.5) + ",");
+                        bw.newLine();
+                  }
             }
             bw.write("]");
             bw.newLine();
             bw.newLine();
             bw.write("ArcsVei : [");
-
+            
             int i = 0;
             for (Object s : edges) {
                   DirectedEdge e = DirectedEdge.class.cast(s);
-                  if (e.getType().equals("highway") || e.getType().equals("residential") || e.getType().equals("service") || 
-                          e.getType().equals("trunk") || e.getType().equals("primary") || e.getType().equals("secondary") || 
-                          e.getType().equals("tetriary") || e.getType().equals("unclassified")) {
+                  if (e.getType().equals("highway") || e.getType().equals("residential") || e.getType().equals("service")
+                          || e.getType().equals("trunk") || e.getType().equals("primary") || e.getType().equals("secondary")
+                          || e.getType().equals("tetriary") || e.getType().equals("unclassified")) {
                         bw.write(i + ",");
                   }
                   i++;
             }
-
+            
             bw.write("]");
             bw.newLine();
             bw.write("ArcsSykkel : [");
-
+            
             for (Object s : edges) {
                   DirectedEdge e = DirectedEdge.class.cast(s);
                   if (e.getType().equals("cycleway")) {
@@ -68,31 +90,30 @@ public class MoselReader {
                   }
                   i++;
             }
-
+            
             bw.write("]");
             bw.newLine();
             bw.write("ArcsGang : [");
             //TODO: add logic
             bw.write("]");
             bw.newLine();
-
-
+            
             bw.write("ArcsVeiOgSykkel: [");
             //TODO: add logic
             bw.write("]");
             bw.newLine();
-
+            
             bw.write("ArcsSykkelOgGang: [");
             //TODO: add logic
             bw.write("]");
             bw.newLine();
-
+            
             bw.write("ArcsVeiOgGang: [");
             //TODO: add logic
             bw.write("]");
             bw.newLine();
             bw.newLine();
-
+            
             bw.write("nBuenummer : " + edges.size());
             bw.newLine();
             
@@ -122,21 +143,21 @@ public class MoselReader {
       private int calculateTime(DirectedEdge e, double bonus) {
             double mps = 0.277778 * (double) e.speedMax();
             double ret = (((double) e.getLength()) / mps) * bonus;
-
+            
             return (int) ret;
       }
-
+      
       public RoadGraph getGraphFromFile() {
             RoadGraph rg = new RoadGraph();
-
+            
             return rg;
       }
-
+      
       public void closeStreams() throws IOException {
             br.close();
             fr.close();
             bw.close();
             fw.close();
-
+            
       }
 }

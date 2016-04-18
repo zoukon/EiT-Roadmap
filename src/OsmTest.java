@@ -26,13 +26,13 @@ public class OsmTest {
             
             System.out.println(nodeTest.size() + "  " + comp.size());
             
-            /*
+            
             for (Object sd : edges) {
                   DirectedEdge e = DirectedEdge.class.cast(sd);
-                  System.out.println(e.getOtherTags());
+                  System.out.println(e.isOneway());
             }
                     
-
+            /*
             MoselReader mr = new MoselReader("D:\\eitTest\\input.txt", "D:\\eitTest\\output.txt");
             mr.writeGraphToFile(edges, nodes);
             mr.closeStreams();
